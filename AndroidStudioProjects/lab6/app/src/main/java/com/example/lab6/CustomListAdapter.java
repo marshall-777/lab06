@@ -50,23 +50,21 @@ public class CustomListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Country country = listData.get(position);
+        Country country = this.listData.get(position);
         holder.countryNameView.setText(country.getCountryName());
         holder.populationView.setText("Population: " + country.getPopulation());
 
-        int imageId = getMipmapResIdByName(country.getFlagName());
+        int imageId = this.getMipmapResIdByName(country.getFlagName());
         holder.flagView.setImageResource(imageId);
 
         return convertView;
     }
 
-    // Метод для получения идентификатора ресурса изображения
     private int getMipmapResIdByName(String resName) {
         String pkgName = context.getPackageName();
         return context.getResources().getIdentifier(resName, "mipmap", pkgName);
     }
 
-    // Вспомогательный класс ViewHolder для оптимизации
     static class ViewHolder {
         ImageView flagView;
         TextView countryNameView;

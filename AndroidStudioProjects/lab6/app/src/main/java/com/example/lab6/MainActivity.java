@@ -1,13 +1,9 @@
 package com.example.lab6;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +13,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        List<Country> image_details = getListData();
-        final ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new CustomListAdapter(this, image_details));
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Object obj = listView.getItemAtPosition(position);
-                Country country = (Country) obj;
-                Toast.makeText(MainActivity.this, "Selected: " + country.getCountryName(), Toast.LENGTH_LONG).show();
-            }
-        });
+        List<Country> countryList = getListData();
+        CountryAdapter adapter = new CountryAdapter(this, countryList);
+        recyclerView.setAdapter(adapter);
     }
 
     private List<Country> getListData() {

@@ -1,8 +1,7 @@
 package com.example.lab6;
-
 public class Country {
     private String countryName;
-    private String flagName; // Название изображения флага без расширения
+    private String flagName; // Название изображения (без расширения)
     private int population;
 
     public Country(String countryName, String flagName, int population) {
