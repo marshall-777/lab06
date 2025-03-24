@@ -1,4 +1,5 @@
 package com.example.lab6;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,41 +11,53 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.ViewHolder> {
-    private List<Country> listData;
-    private Context context;
 
-    public CountryAdapter(Context context, List<Country> listData) {
-        this.context = context;
-        this.listData = listData;
+    private List<Country> countryList;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Country country);
+    }
+
+    public CountryAdapter(List<Country> countryList, OnItemClickListener listener) {
+        this.countryList = countryList;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_country, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Country country = listData.get(position);
+        Country country = countryList.get(position);
         holder.countryNameView.setText(country.getCountryName());
         holder.populationView.setText("Population: " + country.getPopulation());
 
-        int imageId = context.getResources().getIdentifier(country.getFlagName(), "mipmap", context.getPackageName());
-        holder.flagView.setImageResource(imageId);
+        // Получаем ID ресурса флага
+        Context context = holder.itemView.getContext();
+        int flagResId = context.getResources().getIdentifier(country.getFlagName(), "mipmap", context.getPackageName());
+        if (flagResId != 0) {
+            holder.flagView.setImageResource(flagResId);
+        }
+
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(country));
     }
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        return countryList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView flagView;
         TextView countryNameView, populationView;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             flagView = itemView.findViewById(R.id.imageView_flag);
             countryNameView = itemView.findViewById(R.id.textView_countryName);
