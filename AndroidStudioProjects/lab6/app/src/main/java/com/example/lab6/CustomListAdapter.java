@@ -40,7 +40,7 @@ public class CustomListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.list_item_layout, parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_country, parent, false);
             holder = new ViewHolder();
             holder.flagView = convertView.findViewById(R.id.imageView_flag);
             holder.countryNameView = convertView.findViewById(R.id.textView_countryName);
