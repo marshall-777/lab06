@@ -1,32 +1,41 @@
 package com.example.lab6;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private MyAdapter adapter;
-    private List<String> dataList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        List<Country> image_details = getListData();
+        final ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new CustomListAdapter(this, image_details));
 
-        // Заполняем список данными
-        dataList = new ArrayList<>();
-        for (int i = 1; i <= 20; i++) {
-            dataList.add("Элемент " + i);
-        }
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object obj = listView.getItemAtPosition(position);
+                Country country = (Country) obj;
+                Toast.makeText(MainActivity.this, "Selected: " + country.getCountryName(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
-        adapter = new MyAdapter(dataList);
-        recyclerView.setAdapter(adapter);
+    private List<Country> getListData() {
+        List<Country> list = new ArrayList<>();
+        list.add(new Country("Vietnam", "vn", 98000000));
+        list.add(new Country("United States", "us", 320000000));
+        list.add(new Country("Russia", "ru", 142000000));
+        return list;
     }
 }
